@@ -1,44 +1,46 @@
-# CmsImportExport
+# Magento 2 CMS Import/Export — utrzymywany fork (SISL)
 
-MSP_CmsImportExport is a module for Magento 2 allowing users to **import/export CMS pages or blocks**.
+**Przenoszenie bloków i stron CMS między środowiskami** Magento 2 (dev → staging → produkcja).
+Eksportuje wybrane strony i bloki CMS do jednego pliku **ZIP** (razem z powiązanymi obrazami z
+galerii mediów), który importujesz na innej instancji. Koniec z ręcznym kopiowaniem treści przez
+panel albo dumpami tabel `cms_page` / `cms_block`.
 
-MSP_CmsImportExport supports **multistore** and **wysiwyg images**.
+- **Eksport** z panelu: zaznacz strony/bloki → *Export* → dostajesz `.zip`.
+- **Import**: wgraj `.zip` na docelowej instancji (albo z CLI: `bin/magento cms:import plik.zip`).
+- Zachowuje treść, layout, meta, przypisania do widoków sklepu i **załączone obrazy**.
 
-## Installation
+To utrzymywany fork porzuconego `msp/cmsimportexport` z **MageSpecialist Security Suite / CMS tools**
+(ostatni commit 2023; jedyny publiczny fork to zwykły mirror, nie modernizacja). Oryginał nie ma
+przypiętego `magento/framework` i nie był testowany pod nowsze wydania. Ten fork doprecyzowuje
+zależności, aktualizuje komendę CLI do Symfony Console 7 (z 2.4.9) i jest **zweryfikowany na
+Magento 2.4.9 / PHP 8.4** realnym testem round-trip (eksport strony → ZIP → import → weryfikacja).
 
-    composer require msp/cmsimportexport
+## Zgodność
+- Magento **2.4.4 – 2.4.9** (Open Source / Adobe Commerce)
+- PHP **8.1 – 8.4**
+- Wymaga `msp/common` (nasz fork — dociąga się automatycznie)
 
-## How to export contents
+## Instalacja
+```bash
+composer config repositories.sisl-msp-common vcs https://github.com/SISL-source/magento2-msp-common
+composer config repositories.sisl-cmsie vcs https://github.com/SISL-source/magento2-cms-import-export
+composer require msp/cmsimportexport:dev-main
+bin/magento module:enable MSP_Common MSP_CmsImportExport
+bin/magento setup:upgrade
+bin/magento setup:di:compile   # tryb produkcyjny
+```
 
-Select one or more pages you wish to export from **CMS > Pages** in your Magento Admin and select **Export** from the mass action menù.
+## Użycie
+- **Eksport (panel):** Content → Pages / Blocks → zaznacz wiersze → akcja masowa *Export*. Pobierze się ZIP.
+- **Import (panel):** wejście importu w sekcji CMS → wgraj ZIP.
+- **Import (CLI):**
+  ```bash
+  bin/magento cms:import /sciezka/do/cms_export.zip
+  ```
 
-You will download a **ZIP file** containing pages or blocks information. If your pages or blocks contain one or more images,
-they will be automatically added in the ZIP file.
+## Typowy scenariusz
+Redaktor przygotował landing i bloki na **stagingu** → eksport do ZIP → import na **produkcji**
+jednym ruchem, z zachowaniem obrazów i przypisań do store view. Wersjonowalne (ZIP w repo/artefaktach).
 
-<img src="https://raw.githubusercontent.com/magespecialist/m2-MSP_CmsImportExport/master/screenshot/export.png" />
-
-## How to import contents
-
-A new option **Import** will appear in your Magento Admin **Content** bmenu. Click on it to import a previously exported ZIP file.
-
-<img src="https://raw.githubusercontent.com/magespecialist/m2-MSP_CmsImportExport/master/screenshot/import.png" />
-
-While importing you can change import modes:
-
-<img src="https://raw.githubusercontent.com/magespecialist/m2-MSP_CmsImportExport/master/screenshot/import2.png" />
-
-### CMS import mode
-
-**Overwrite existing**: If a page/block with same id and store assignment is found, it will be overwritten by the ZIP file content.
-
-**Skip existing**: If a page/block with same id and store assignment is found, it will **NOT** be overwritten by the ZIP file content.
-
-### Media import mode
-
-**Do not import**: Do not import media files in the ZIP file.
-
-**Overwrite existing**: If an image with same name exists it will be overwritten with version in the ZIP file.
-
-**Skip existing**: If an image with same name exists it will **NOT** be overwritten with version in the ZIP file.
-
-
+## Licencja
+OSL-3.0 / AFL-3.0 (jak oryginał). Fork utrzymywany przez [SISL](https://sisl.pl).

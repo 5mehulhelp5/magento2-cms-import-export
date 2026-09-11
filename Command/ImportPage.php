@@ -49,7 +49,7 @@ class ImportPage extends Command
      * @return int|null|void
      * @throws \Exception
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $contentInterface = $this->objectManager->get(ContentInterface::class);
 
@@ -59,5 +59,7 @@ class ImportPage extends Command
         }
 
         $output->writeln('Done.');
+
+        return \Magento\Framework\Console\Cli::RETURN_SUCCESS;
     }
 }
