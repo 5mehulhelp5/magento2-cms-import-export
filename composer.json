@@ -1,10 +1,10 @@
 {
-    "name": "msp/cmsimportexport",
+    "name": "sisl-source/magento2-cms-import-export",
     "description": "",
     "require": {
         "php": "~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0",
         "magento/framework": ">=103.0.4 <104",
-        "msp/common": "*"
+        "sisl-source/magento2-msp-common": "^1.0"
     },
     "type": "magento2-module",
     "license": [
