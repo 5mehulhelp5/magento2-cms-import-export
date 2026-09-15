@@ -21,10 +21,9 @@ Magento 2.4.9 / PHP 8.4** realnym testem round-trip (eksport strony → ZIP → 
 - Wymaga `msp/common` (nasz fork — dociąga się automatycznie)
 
 ## Instalacja
+
 ```bash
-composer config repositories.sisl-msp-common vcs https://github.com/SISL-source/magento2-msp-common
-composer config repositories.sisl-cmsie vcs https://github.com/SISL-source/magento2-cms-import-export
-composer require msp/cmsimportexport:dev-main
+composer require sisl-source/magento2-cms-import-export
 bin/magento module:enable MSP_Common MSP_CmsImportExport
 bin/magento setup:upgrade
 bin/magento setup:di:compile   # tryb produkcyjny
