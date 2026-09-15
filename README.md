@@ -1,45 +1,47 @@
-# Magento 2 CMS Import/Export — utrzymywany fork (SISL)
+# Magento 2 CMS Import/Export — maintained fork (SISL)
 
-**Przenoszenie bloków i stron CMS między środowiskami** Magento 2 (dev → staging → produkcja).
-Eksportuje wybrane strony i bloki CMS do jednego pliku **ZIP** (razem z powiązanymi obrazami z
-galerii mediów), który importujesz na innej instancji. Koniec z ręcznym kopiowaniem treści przez
-panel albo dumpami tabel `cms_page` / `cms_block`.
+**Move CMS blocks and pages between Magento 2 environments** (dev → staging → production). Exports
+selected CMS pages and blocks to a single **ZIP** file (together with the related images from the
+media gallery), which you import on another instance. No more copying content by hand through the
+admin or dumping the `cms_page` / `cms_block` tables.
 
-- **Eksport** z panelu: zaznacz strony/bloki → *Export* → dostajesz `.zip`.
-- **Import**: wgraj `.zip` na docelowej instancji (albo z CLI: `bin/magento cms:import plik.zip`).
-- Zachowuje treść, layout, meta, przypisania do widoków sklepu i **załączone obrazy**.
+- **Export** from the admin: select pages/blocks → *Export* → you get a `.zip`.
+- **Import**: upload the `.zip` on the target instance (or from the CLI: `bin/magento cms:import file.zip`).
+- Preserves content, layout, meta, store-view assignments and **attached images**.
 
-To utrzymywany fork porzuconego `msp/cmsimportexport` z **MageSpecialist Security Suite / CMS tools**
-(ostatni commit 2023; jedyny publiczny fork to zwykły mirror, nie modernizacja). Oryginał nie ma
-przypiętego `magento/framework` i nie był testowany pod nowsze wydania. Ten fork doprecyzowuje
-zależności, aktualizuje komendę CLI do Symfony Console 7 (z 2.4.9) i jest **zweryfikowany na
-Magento 2.4.9 / PHP 8.4** realnym testem round-trip (eksport strony → ZIP → import → weryfikacja).
+This is a maintained fork of the abandoned `msp/cmsimportexport` from the **MageSpecialist Security
+Suite / CMS tools** (last commit 2023; the only public fork is a plain mirror, not a
+modernisation). The original pins no `magento/framework` and was never tested against newer
+releases. This fork tightens the dependencies, updates the CLI command to Symfony Console 7
+(shipped with 2.4.9) and is **verified on Magento 2.4.9 / PHP 8.4** with a real round-trip test
+(export page → ZIP → import → verification).
 
-## Zgodność
+## Compatibility
 - Magento **2.4.4 – 2.4.9** (Open Source / Adobe Commerce)
 - PHP **8.1 – 8.4**
-- Wymaga `msp/common` (nasz fork — dociąga się automatycznie)
+- Requires `sisl-source/magento2-msp-common` (our fork — pulled in automatically)
 
-## Instalacja
+## Installation
 
 ```bash
 composer require sisl-source/magento2-cms-import-export
 bin/magento module:enable MSP_Common MSP_CmsImportExport
 bin/magento setup:upgrade
-bin/magento setup:di:compile   # tryb produkcyjny
+bin/magento setup:di:compile   # production mode
 ```
 
-## Użycie
-- **Eksport (panel):** Content → Pages / Blocks → zaznacz wiersze → akcja masowa *Export*. Pobierze się ZIP.
-- **Import (panel):** wejście importu w sekcji CMS → wgraj ZIP.
+## Usage
+- **Export (admin):** Content → Pages / Blocks → select rows → mass action *Export*. A ZIP is downloaded.
+- **Import (admin):** the import entry in the CMS section → upload the ZIP.
 - **Import (CLI):**
   ```bash
-  bin/magento cms:import /sciezka/do/cms_export.zip
+  bin/magento cms:import /path/to/cms_export.zip
   ```
 
-## Typowy scenariusz
-Redaktor przygotował landing i bloki na **stagingu** → eksport do ZIP → import na **produkcji**
-jednym ruchem, z zachowaniem obrazów i przypisań do store view. Wersjonowalne (ZIP w repo/artefaktach).
+## A typical scenario
+A content editor prepared a landing page and blocks on **staging** → export to ZIP → import on
+**production** in one move, keeping images and store-view assignments. Versionable (ZIP in the
+repo/artifacts).
 
-## Licencja
-OSL-3.0 / AFL-3.0 (jak oryginał). Fork utrzymywany przez [SISL](https://sisl.pl).
+## License
+OSL-3.0 / AFL-3.0 (same as upstream). Fork maintained by [SISL](https://sisl.pl).
